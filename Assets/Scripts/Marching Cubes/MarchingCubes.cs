@@ -130,7 +130,8 @@ public class MarchingCubes : MonoBehaviour
             for (int y = 0; y < 2; y++) {
                 for (int z = 0; z < 2; z++)
                 {
-                    if (ScanCube[z,x,y].Value >= SurfaceLevel)
+                    //Try making different edge conversions
+                    if (ScanCube[x,y,z].Value >= SurfaceLevel)
                     {
                         CubeIndex += 1 << PointCount;
                     }
