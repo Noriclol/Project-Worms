@@ -243,9 +243,12 @@ MonoBehaviour:
   pointRep: {fileID: 4074447110848551033, guid: 509c947cf7fbafc4ab48c3f578b45db8, type: 3}
   Valid: {fileID: 2100000, guid: 135f5b51f262bec4291a12a159b36b75, type: 2}
   Invalid: {fileID: 2100000, guid: 09cd3026994f5f8468e929a50adf478d, type: 2}
-  CellSize: {x: 20, y: 10, z: 20}
-  PointDensity: {x: 10, y: 5, z: 10}
+  CellSize: {x: 200, y: 8, z: 200}
+  PointDensity: {x: 50, y: 4, z: 50}
   SurfaceLevel: 0
+  VertexBuffer: []
+  IndexBuffer: 
+  heightMultiplier: 1
 --- !u!4 &974006747
 Transform:
   m_ObjectHideFlags: 0
@@ -281,7 +284,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 14ff039c07c49fc47a09becdf6fb53e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

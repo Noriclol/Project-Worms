@@ -7,24 +7,21 @@ using UnityEngine;
 public class MeshGenerator : MonoBehaviour
 {
     public Mesh mesh;
-
+    
     private Vector3[] vertices;
     private int[] triangles;
-
-    private void Start()
+    
+    public void Generate(Vector3[] verticesInput, int[] indicesInput)
     {
         mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-    }
-
-    private void UpdateMesh()
-    {
         mesh.Clear();
-    }
-
-    void CreateShape()
-    {
         
+        mesh.vertices = verticesInput;
+        mesh.triangles = indicesInput;
+        
+        mesh.RecalculateNormals();
+        
+        GetComponent<MeshFilter>().mesh = mesh;
     }
     
 }
