@@ -10,10 +10,13 @@ public class Main : MonoBehaviour
     public static GameManager GameManager;
     public static SceneHandler SceneHandler;
     public static InputManager InputManager;
+    public static PlayerManager PlayerManager;
+    public LevelManager LevelManager;
+    
     
     //CONFIC //will move to separate script when it becomes unwieldy
-    private static bool RunStartScene = false;
-   
+    private static bool RunStartScene = true;
+    public static bool DebugMsg = true;
     
     
     //Singleton Stuff
@@ -26,7 +29,7 @@ public class Main : MonoBehaviour
         GameManager = GetComponent<GameManager>();
         SceneHandler = GetComponent<SceneHandler>();
         InputManager = GetComponent<InputManager>();
-        
+        PlayerManager = GetComponent<PlayerManager>();
         
         if (instance != null && instance != this)
         {
@@ -58,5 +61,8 @@ public class Main : MonoBehaviour
         GameObject.DontDestroyOnLoad(main);
         Debug.Log("Main Loaded");
     }
+
+    
+    
     
 }

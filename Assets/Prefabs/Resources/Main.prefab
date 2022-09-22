@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5836255852575046566}
   - component: {fileID: 4549433906355142849}
   - component: {fileID: 7779743641901653521}
+  - component: {fileID: 6352812427573277079}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -73,6 +74,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
+  ValidPlayerScenes:
+  - m_Handle: 0
+  CurrentSceneRef:
+    m_Handle: 0
 --- !u!114 &7779743641901653521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,15 +90,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757fab2d0fb48eb449dc18f68cf13128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pause:
-    m_Name: Pause
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 89ef318e-6c9d-48db-afa5-e901aa667608
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+--- !u!114 &6352812427573277079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5055540701606969183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d65b41f67ca0143a53cc1d966b2008, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 2584333359966016483, guid: cad6c11d95a12654b84ace7949d8b07f, type: 3}
+  players: []
+  playerCount: 1
+  Selected: 0
 --- !u!1 &6141334893697763101
 GameObject:
   m_ObjectHideFlags: 0

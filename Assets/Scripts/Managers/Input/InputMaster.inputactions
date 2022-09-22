@@ -6,7 +6,7 @@
             "id": "7e65216a-cd7d-4609-b51e-7efd72b7de4a",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Pause",
                     "type": "Button",
                     "id": "c231c576-56a2-4810-a580-8fa4655c012b",
                     "expectedControlType": "Button",
@@ -19,11 +19,11 @@
                 {
                     "name": "",
                     "id": "9913d078-a8e7-473f-9b17-debd860aeb67",
-                    "path": "",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": "KeyboardMouse",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -34,6 +34,33 @@
             "id": "feb5d0b2-297e-4ac5-baa5-36c14b069eae",
             "actions": [
                 {
+                    "name": "Mouse",
+                    "type": "PassThrough",
+                    "id": "4e652e99-ce3f-4efa-a20b-e2855672ed54",
+                    "expectedControlType": "Delta",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MouseBtn1",
+                    "type": "Button",
+                    "id": "670fd627-96d3-42da-b35e-815ed35b0e17",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MouseBtn2",
+                    "type": "Button",
+                    "id": "aa4d2c63-41e0-4135-88d4-ac1111016f71",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Movement",
                     "type": "Value",
                     "id": "a16658c5-bc1f-4037-9167-0d25c7bdf0d2",
@@ -43,16 +70,100 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Mouse",
-                    "type": "PassThrough",
-                    "id": "4e652e99-ce3f-4efa-a20b-e2855672ed54",
-                    "expectedControlType": "Delta",
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "13ae2d1c-75c2-4762-aabf-efe46bdd5ebe",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwapWeapon",
+                    "type": "Button",
+                    "id": "3e835e23-2a43-46fc-96af-66ded17e645c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwapCamera",
+                    "type": "Button",
+                    "id": "5acc99fb-c9d4-4f57-8525-dbc2a9ab047c",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 }
             ],
             "bindings": [
+                {
+                    "name": "",
+                    "id": "8f5e17af-7a3c-4bda-aca3-1e0ff73fb19d",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Mouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "23559020-82d0-4df3-b7f2-0e56df161531",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "MouseBtn1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cebaa120-4518-4827-93e5-c5779f8a81e4",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "MouseBtn2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9cfe78d1-9217-43cb-ac43-f09303bd16c6",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "SwapWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "83ff5d34-c216-4ba7-9b8a-d231c783cb40",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "SwapCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "04bd7587-e0ca-4f15-b672-0a6074a91a24",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
                 {
                     "name": "WASD",
                     "id": "4c900a66-076d-4223-adee-c6cdc9a55c8c",
@@ -107,17 +218,6 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "8f5e17af-7a3c-4bda-aca3-1e0ff73fb19d",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Mouse",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }
