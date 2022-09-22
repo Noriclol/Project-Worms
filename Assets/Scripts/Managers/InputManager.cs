@@ -130,6 +130,7 @@ public class InputManager : MonoBehaviour
         mousebtn2.performed += Event_Mouse_Btn2;
         
         move.performed += Event_Player_Move;
+        move.canceled += Event_Player_Move;
         jump.performed += Event_Player_Jump;
         sWeapon.performed += Event_Player_SwapWeapon;
         sCam.performed += Event_Player_SwapCamera;
@@ -147,6 +148,7 @@ public class InputManager : MonoBehaviour
         mousebtn2.performed -= Event_Mouse_Btn2;
         
         move.performed -= Event_Player_Move;
+        move.canceled -= Event_Player_Move;
         jump.performed -= Event_Player_Jump;
         sWeapon.performed -= Event_Player_SwapWeapon;
         sCam.performed -= Event_Player_SwapCamera;

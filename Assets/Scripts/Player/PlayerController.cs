@@ -17,6 +17,12 @@ public class PlayerController : MonoBehaviour
         EnableCamera();
     }
 
+    
+    
+    
+    
+    
+    //EventActionFunctions
 
     public void Move(Vector2 movementInput)
     {
@@ -38,9 +44,25 @@ public class PlayerController : MonoBehaviour
         SetActiveCamera();
         EnableCamera();
     }
-    
 
-    public void EnableCamera()
+    public void SwitchWeapon()
+    {
+        print("Switching weapon");
+    }
+
+    public void Aim()
+    {
+        print("aiming");
+    }
+
+    
+    //~EventActionFunctions
+    
+    
+    
+    //Minor Functions
+    
+    private void EnableCamera()
     {
         if (cameraMode == CameraMode.First)
         {
@@ -54,13 +76,13 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    public void DisableCamera()
+    private void DisableCamera()
     {
         ThirdPerson.SetActive(false);
         ThirdPerson.SetActive(false);
     }
 
-    public void SetActiveCamera()
+    private void SetActiveCamera()
     {
         switch (cameraMode)
         {
