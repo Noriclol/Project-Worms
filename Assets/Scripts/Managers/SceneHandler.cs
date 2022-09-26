@@ -8,20 +8,11 @@ public class SceneHandler : MonoBehaviour
 {
     public bool isPaused = false;
     
-    [HideInInspector]
-    public List<Scene> ValidPlayerScenes;
-    [HideInInspector]
-    public Scene CurrentSceneRef;
-
-    public void Awake()
-    {
-        ValidPlayerScenes.Add(SceneManager.GetSceneByBuildIndex(3));
-    }
+    
 
     public void Load(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-        CurrentSceneRef = SceneManager.GetActiveScene();
     }
     
     public void Unload(string sceneName)

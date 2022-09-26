@@ -1,33 +1,125 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     //Camera
-    public GameObject ThirdPerson;
-    public GameObject FirstPerson;
-    public CameraMode cameraMode = CameraMode.Third;
+    // public GameObject ThirdPerson;
+    // public GameObject FirstPerson;
+    // public CameraMode cameraMode = CameraMode.Third;
+
+    
+    [Header("Player")] 
+    
+    public Transform orientation; //this
+    public Transform playerObj;
+    public Rigidbody rb;
+
+    [Header("Camera")] 
+    public Transform GameCamera;
+
+    public GameObject VirtualCam;
+    
+    
+    public float moveSpeed = 10f;
+    public float rotationSpeed = 7f;
+
+    
+    //fields
+    private Vector2 movementInput;
+    private Vector3 moveDirection;
+    
+    
+    //  Enable / Disable
+
+    // private void OnEnable()
+    // {
+    //     InputManager.OnMove += UpdateMoveVec;
+    // }
+    //
+    // private void OnDisable()
+    // {
+    //     InputManager.OnMove -= UpdateMoveVec;
+    //
+    // }
 
 
+    
+    
+    
+    //  Start / Update
+    
     private void Start()
     {
-        EnableCamera();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void Update()
+    {
+        //sets the view and move directions (Camera and orientation of character)
+        SetViewDirection();
+        SetMoveDirection();
+        
+        // if (movementInput != Vector2.zero)
+        // {
+        //     SetMoveDirection();
+        // }
+    }
+
+    private void FixedUpdate()
+    {
+        AddMoveForce();
     }
 
     
-    
-    
-    
-    
-    //EventActionFunctions
 
-    public void Move(Vector2 movementInput)
+    
+    
+    
+    
+    
+    // Movement
+    
+    public void UpdateMoveVec(Vector2 movementInput)
     {
         print($"Movment {movementInput}");
+        this.movementInput = movementInput;
     }
+
+    public void AddMoveForce()
+    {
+        rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Force);
+    }
+
+    public void SetMoveDirection()
+    {
+        moveDirection = orientation.forward * movementInput.y + orientation.right * movementInput.x;
+
+        if (moveDirection != Vector3.zero)
+            playerObj.forward = Vector3.Slerp(playerObj.forward, moveDirection.normalized, Time.deltaTime * rotationSpeed);
+    }
+    
+    // Camera
+
+    public void SetViewDirection()
+    {
+        Vector3 viewDir = transform.position - new Vector3(GameCamera.position.x, transform.position.y, GameCamera.position.z);
+        orientation.forward = viewDir.normalized;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    //otherActions
     
     public void Jump()
     {
@@ -41,8 +133,8 @@ public class PlayerController : MonoBehaviour
 
     public void SwitchCamera()
     {
-        SetActiveCamera();
-        EnableCamera();
+        // SetActiveCamera();
+        // EnableCamera();
     }
 
     public void SwitchWeapon()
@@ -53,46 +145,5 @@ public class PlayerController : MonoBehaviour
     public void Aim()
     {
         print("aiming");
-    }
-
-    
-    //~EventActionFunctions
-    
-    
-    
-    //Minor Functions
-    
-    private void EnableCamera()
-    {
-        if (cameraMode == CameraMode.First)
-        {
-            FirstPerson.SetActive(true);
-            ThirdPerson.SetActive(false);
-        }
-        if (cameraMode == CameraMode.Third)
-        {
-            FirstPerson.SetActive(false);
-            ThirdPerson.SetActive(true);
-        }
-    }
-    
-    private void DisableCamera()
-    {
-        ThirdPerson.SetActive(false);
-        ThirdPerson.SetActive(false);
-    }
-
-    private void SetActiveCamera()
-    {
-        switch (cameraMode)
-        {
-            case CameraMode.First:
-                cameraMode = CameraMode.Third;
-                break;
-            
-            case CameraMode.Third:
-                cameraMode = CameraMode.First;
-                break;
-        }
     }
 }

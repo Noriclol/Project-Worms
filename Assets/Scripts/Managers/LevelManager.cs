@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     void Start()
     {
-        Main.PlayerManager.Init();
+        Main.GameManager.Init();
     }
 
 }

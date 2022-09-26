@@ -10,7 +10,6 @@ public class Main : MonoBehaviour
     public static GameManager GameManager;
     public static SceneHandler SceneHandler;
     public static InputManager InputManager;
-    public static PlayerManager PlayerManager;
     public LevelManager LevelManager;
     
     
@@ -29,8 +28,7 @@ public class Main : MonoBehaviour
         GameManager = GetComponent<GameManager>();
         SceneHandler = GetComponent<SceneHandler>();
         InputManager = GetComponent<InputManager>();
-        PlayerManager = GetComponent<PlayerManager>();
-        
+
         if (instance != null && instance != this)
         {
             Destroy(this.gameObject);

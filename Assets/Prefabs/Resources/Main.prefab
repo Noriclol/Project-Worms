@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5836255852575046566}
   - component: {fileID: 4549433906355142849}
   - component: {fileID: 7779743641901653521}
-  - component: {fileID: 6352812427573277079}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -49,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67d97d028a598a4e826813c056efd48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LevelManager: {fileID: 0}
 --- !u!114 &5836255852575046566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +61,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d52e02d66598d854d998e651d76ed243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 8647594574370965050, guid: c165b87794dae04499b3040e64ba210d, type: 3}
+  cameraPrefab: {fileID: 3200863315144779450, guid: 56735c7ae479e984797d0fb7d0b16bd2, type: 3}
+  players: []
+  GameCamera: {fileID: 0}
+  playerCount: 1
+  Selected: 0
+  playerSpawnAreaSize: 400
 --- !u!114 &4549433906355142849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,10 +81,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  ValidPlayerScenes:
-  - m_Handle: 0
-  CurrentSceneRef:
-    m_Handle: 0
 --- !u!114 &7779743641901653521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,22 +93,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757fab2d0fb48eb449dc18f68cf13128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6352812427573277079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5055540701606969183}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1d65b41f67ca0143a53cc1d966b2008, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 2584333359966016483, guid: cad6c11d95a12654b84ace7949d8b07f, type: 3}
-  players: []
-  playerCount: 1
-  Selected: 0
 --- !u!1 &6141334893697763101
 GameObject:
   m_ObjectHideFlags: 0
