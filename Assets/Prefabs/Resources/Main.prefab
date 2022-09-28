@@ -65,9 +65,11 @@ MonoBehaviour:
   cameraPrefab: {fileID: 3200863315144779450, guid: 56735c7ae479e984797d0fb7d0b16bd2, type: 3}
   players: []
   GameCamera: {fileID: 0}
-  playerCount: 1
+  playerCount: 2
+  teamCount: 50
   Selected: 0
-  playerSpawnAreaSize: 400
+  playerSpawnAreaSize: 20
+  turn: 0
 --- !u!114 &4549433906355142849
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -34,6 +34,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection;
     
     
+    
+    //Player
+    
+    
     //  Enable / Disable
 
     // private void OnEnable()

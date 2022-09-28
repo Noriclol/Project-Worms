@@ -14,7 +14,7 @@ public class Main : MonoBehaviour
     
     
     //CONFIC //will move to separate script when it becomes unwieldy
-    private static bool RunStartScene = false;
+    private static bool RunStartScene = true;
     public static bool DebugMsg = true;
     
     

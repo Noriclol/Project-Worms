@@ -6,7 +6,7 @@ public class MenuUI : MonoBehaviour
 {
     public void PlayBtn()
     {
-        Main.SceneHandler.Load("CharacterTest");
+        Main.SceneHandler.LoadGame("CharacterTest");
     }
 
     public void SettingsBtn()

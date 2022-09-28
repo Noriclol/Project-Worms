@@ -8,15 +8,17 @@ public class GameManager : MonoBehaviour
     //refs
     public GameObject playerPrefab;
     public GameObject cameraPrefab;
-    
+
+
+    private List<Color> teamColors;
     //Instance Management
     public List<PlayerController> players;
     public GameObject GameCamera;
     public int playerCount = 1;
+    public int teamCount = 2;
     public int Selected = 0;
     public float playerSpawnAreaSize = 10f;
-
-
+    public int turn = 0;
 
     Vector3 GetPosinArea()
     {
@@ -37,16 +39,34 @@ public class GameManager : MonoBehaviour
         //camera Instantiation
         GameCamera = Instantiate(cameraPrefab);
         
-        
-        
-        //Instantiate Players
-        for (int i = 0; i < playerCount; i++)
+        //List Instantiations
+        teamColors = new List<Color>();
+
+        for (int i = 0; i < teamCount; i++)
         {
-            var newPlayer = Instantiate(playerPrefab, GetPosinArea(), Quaternion.identity);
-            players.Add(newPlayer.GetComponent<PlayerController>());
-            players[i].GameCamera = GameCamera.transform;
+            teamColors.Add(Random.ColorHSV());
+        }
+        
+        
+        for (int i = 0; i < playerCount; i++) {
+            for (int j = 0; j < teamCount; j++)
+            {
+                var newPlayer = Instantiate(playerPrefab, GetPosinArea(), Quaternion.identity);
+                var newPlayerController = newPlayer.GetComponent<PlayerController>();
+                
+                newPlayerController.GameCamera = GameCamera.transform;
+                newPlayerController.playerObj.GetComponent<MeshRenderer>().material.color = teamColors[j];
+                
+                
+                players.Add(newPlayerController);
+            }
         }
         BindPlayer(Selected);
+        
+        
+        
+        
+        
     }
     
     public void BindPlayer(int n)
@@ -86,12 +106,21 @@ public class GameManager : MonoBehaviour
         players[n].VirtualCam.gameObject.SetActive(false);
     }
 
-
-
-    public enum MouseMode
+    public void NextPlayer()
     {
-        Game,
-        UI
+        if (Selected + 2 <= players.Count)
+        {
+            UnbindPlayer(Selected);
+            Selected++;
+            BindPlayer(Selected);
+        }
+        else
+        {
+            UnbindPlayer(Selected);
+            Selected = 0;
+            turn++;
+            BindPlayer(Selected);
+        }
     }
 }
 

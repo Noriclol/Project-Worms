@@ -13,6 +13,14 @@ public class SceneHandler : MonoBehaviour
     public void Load(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        
+    }
+
+
+    public void LoadGame(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene("Gameplay", LoadSceneMode.Additive);
     }
     
     public void Unload(string sceneName)
