@@ -7,12 +7,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    //Camera
-    // public GameObject ThirdPerson;
-    // public GameObject FirstPerson;
-    // public CameraMode cameraMode = CameraMode.Third;
-
-    
+    //Component References
     [Header("Player")] 
     
     public Transform orientation; //this
@@ -25,34 +20,17 @@ public class PlayerController : MonoBehaviour
     public GameObject VirtualCam;
     
     
+    
+    //fields Public
+
+    public bool Selected = false;
     public float moveSpeed = 10f;
     public float rotationSpeed = 7f;
 
     
-    //fields
+    //fields Private
     private Vector2 movementInput;
     private Vector3 moveDirection;
-    
-    
-    
-    //Player
-    
-    
-    //  Enable / Disable
-
-    // private void OnEnable()
-    // {
-    //     InputManager.OnMove += UpdateMoveVec;
-    // }
-    //
-    // private void OnDisable()
-    // {
-    //     InputManager.OnMove -= UpdateMoveVec;
-    //
-    // }
-
-
-    
     
     
     //  Start / Update
@@ -66,18 +44,19 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         //sets the view and move directions (Camera and orientation of character)
-        SetViewDirection();
-        SetMoveDirection();
-        
-        // if (movementInput != Vector2.zero)
-        // {
-        //     SetMoveDirection();
-        // }
+        if (Selected)
+        {
+            SetViewDirection();
+            SetMoveDirection();
+        }
     }
 
     private void FixedUpdate()
     {
-        AddMoveForce();
+        if (Selected)
+        {
+            AddMoveForce();
+        }
     }
 
     

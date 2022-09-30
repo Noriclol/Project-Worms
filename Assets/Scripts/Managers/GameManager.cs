@@ -62,11 +62,11 @@ public class GameManager : MonoBehaviour
             }
         }
         BindPlayer(Selected);
-        
-        
-        
-        
-        
+        players[Selected].Selected = true;
+
+
+
+
     }
     
     public void BindPlayer(int n)
@@ -111,15 +111,23 @@ public class GameManager : MonoBehaviour
         if (Selected + 2 <= players.Count)
         {
             UnbindPlayer(Selected);
+            players[Selected].Selected = false;
+            
             Selected++;
+            
             BindPlayer(Selected);
+            players[Selected].Selected = true;
         }
         else
         {
             UnbindPlayer(Selected);
+            players[Selected].Selected = false;
+            
             Selected = 0;
             turn++;
+            
             BindPlayer(Selected);
+            players[Selected].Selected = true;
         }
     }
 }
