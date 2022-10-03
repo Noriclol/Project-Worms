@@ -757,6 +757,7 @@ GameObject:
   - component: {fileID: 8647594574370965048}
   - component: {fileID: 8647594574370965051}
   - component: {fileID: 1587395359}
+  - component: {fileID: -1524489657730706425}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -817,8 +818,25 @@ MonoBehaviour:
   rb: {fileID: 8647594574370965051}
   GameCamera: {fileID: 0}
   VirtualCam: {fileID: 8647594575191880689}
+  Selected: 0
   moveSpeed: 10
   rotationSpeed: 7
+--- !u!114 &-1524489657730706425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8647594574370965050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc5494b22d638714ca8bc5c82a617de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Primary: {fileID: 0}
+  Secondary: {fileID: 0}
+  ActiveWeapon: {fileID: 3480993453994737624}
+  InactiveWeapon: {fileID: 4488041977491025503}
 --- !u!1 &8647594574513624048
 GameObject:
   m_ObjectHideFlags: 0

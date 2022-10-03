@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 10f;
     public float rotationSpeed = 7f;
 
+    public float JumpForce = 10f;
+
     
     //fields Private
     private Vector2 movementInput;
@@ -107,6 +109,7 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         print($"Jump");
+        rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
     }
 
     public void Shoot()

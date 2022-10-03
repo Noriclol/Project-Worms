@@ -11,11 +11,11 @@ public class Main : MonoBehaviour
     public static SceneHandler SceneHandler;
     public static InputManager InputManager;
     public LevelManager LevelManager;
-    
-    
+
+
     //CONFIC //will move to separate script when it becomes unwieldy
-    private static bool RunStartScene = true;
-    public static bool DebugMsg = true;
+    public static bool RunStartScene = true;
+    public static bool DebugMsg = false;
     
     
     //Singleton Stuff
