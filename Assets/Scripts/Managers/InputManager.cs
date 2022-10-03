@@ -156,4 +156,31 @@ public class InputManager : MonoBehaviour
         
     }
 
+
+
+
+    public void SetMouseState(MouseState state)
+    {
+        switch (state)
+        {
+            case MouseState.Game:
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                break;
+            
+            case MouseState.UI:
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+                break;
+            
+        }
+        
+    }
+
+    public enum MouseState
+    {
+        Game, 
+        UI
+    }
+
 }

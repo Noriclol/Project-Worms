@@ -29,6 +29,7 @@ public class WeaponController : MonoBehaviour
     public void Start()
     {
         EquipStarterLoadout();
+        UpdateWeapons();
     }
 
 
@@ -62,8 +63,12 @@ public class WeaponController : MonoBehaviour
     private void UpdateWeapons()
     {
         //destroy Guns
-        GameObject.Destroy(ActiveWeapon.GetChild(0).gameObject);
-        GameObject.Destroy(InactiveWeapon.GetChild(0).gameObject);
+
+        if (ActiveWeapon.childCount > 0)
+            GameObject.Destroy(ActiveWeapon.GetChild(0).gameObject);
+
+        if (InactiveWeapon.childCount > 0)
+            GameObject.Destroy(InactiveWeapon.GetChild(0).gameObject);
 
 
         GameObject Active;
@@ -83,8 +88,8 @@ public class WeaponController : MonoBehaviour
                 break;
             case GunSelection.secondary:
                 //Instantiate
-                Active = Instantiate(Secondary.GunPrefab, InactiveWeapon);
-                Inactive = Instantiate(Primary.GunPrefab, ActiveWeapon);
+                Active = Instantiate(Secondary.GunPrefab, ActiveWeapon);
+                Inactive = Instantiate(Primary.GunPrefab, InactiveWeapon);
                 //Attach
                 Active.transform.SetParent(ActiveWeapon.transform, false);
                 Inactive.transform.SetParent(InactiveWeapon.transform, false);
@@ -110,7 +115,8 @@ public class WeaponController : MonoBehaviour
 
     private void EquipStarterLoadout()
     {
-        Equip(GunSelection.secondary, Pistol);
+        Secondary = Pistol;
+        //Equip(GunSelection.secondary, Pistol);
     }
 
     public enum GunSelection

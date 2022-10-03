@@ -48,10 +48,11 @@ public class Main : MonoBehaviour
             SceneHandler.LoadDefaultScene();
  
         }
+        
     }
-    
-    
-    
+
+
+
     //Loading Main into Game
     public static void LoadMain()
     {
@@ -60,7 +61,5 @@ public class Main : MonoBehaviour
         Debug.Log("Main Loaded");
     }
 
-    
-    
     
 }

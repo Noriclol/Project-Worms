@@ -32,9 +32,6 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         
-        //mouse lock
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         
         //camera Instantiation
         GameCamera = Instantiate(cameraPrefab);
@@ -62,7 +59,6 @@ public class GameManager : MonoBehaviour
             }
         }
         BindPlayer(Selected);
-        players[Selected].Selected = true;
 
 
 
@@ -85,7 +81,8 @@ public class GameManager : MonoBehaviour
         
         
         //virtualCamera
-        players[n].VirtualCam.gameObject.SetActive(true);
+        players[n].FreeVCam.gameObject.SetActive(true);
+        players[n].Selected = true;
     }
     public void UnbindPlayer(int n)
     {
@@ -103,31 +100,30 @@ public class GameManager : MonoBehaviour
         
         
         //virtualCamera
-        players[n].VirtualCam.gameObject.SetActive(false);
+        players[n].FreeVCam.gameObject.SetActive(false);
+        players[n].Selected = false;
     }
 
+    
+    [ContextMenu("Next Player")]
     public void NextPlayer()
     {
-        if (Selected + 2 <= players.Count)
+        if (Selected + 1 <= players.Count - 1)
         {
             UnbindPlayer(Selected);
-            players[Selected].Selected = false;
             
             Selected++;
             
             BindPlayer(Selected);
-            players[Selected].Selected = true;
         }
         else
         {
             UnbindPlayer(Selected);
-            players[Selected].Selected = false;
             
             Selected = 0;
             turn++;
             
             BindPlayer(Selected);
-            players[Selected].Selected = true;
         }
     }
 }

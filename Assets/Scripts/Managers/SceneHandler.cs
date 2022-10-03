@@ -13,7 +13,6 @@ public class SceneHandler : MonoBehaviour
     public void Load(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-        
     }
 
 
@@ -21,7 +20,9 @@ public class SceneHandler : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
         SceneManager.LoadScene("Gameplay", LoadSceneMode.Additive);
+        Main.InputManager.SetMouseState(InputManager.MouseState.Game);
     }
+    
     
     public void Unload(string sceneName)
     {
@@ -41,18 +42,20 @@ public class SceneHandler : MonoBehaviour
         {
             isPaused = false;
             SceneManager.UnloadSceneAsync("Pause");
-
+            Main.InputManager.SetMouseState(InputManager.MouseState.Game);
         }
         else
         {
             isPaused = true;
             SceneManager.LoadScene("Pause", LoadSceneMode.Additive);
+            Main.InputManager.SetMouseState(InputManager.MouseState.UI);
         }
     }
 
     public void LoadDefaultScene()
     {
         Load("Menu");
+        Main.InputManager.SetMouseState(InputManager.MouseState.UI);
     }
 }
 
