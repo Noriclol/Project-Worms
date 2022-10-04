@@ -7,7 +7,12 @@ using UnityEngine.SceneManagement;
 public class SceneHandler : MonoBehaviour
 {
     public bool isPaused = false;
+
+    private void OnEnable() 
+        => InputManager.OnPause += Pause;
     
+    private void OnDisable() 
+        => InputManager.OnPause -= Pause;
     
 
     public void Load(string sceneName)

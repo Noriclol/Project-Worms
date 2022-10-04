@@ -15,23 +15,33 @@ public class PlayerController : MonoBehaviour
     public GameObject FreeVCam;
     
     public GameObject AimVCam;
+
+    public Transform AimLookAt;
     
-    
+    public Transform AimFollow;
     
     [Header("Player References")] 
     
     [SerializeField]
     private Transform orientation;
     
-    [SerializeField] public Transform playerObj;
+    [SerializeField] 
+    public Transform playerObj;
     
     [SerializeField]
     private Rigidbody rb;
+
+    [SerializeField] 
+    private WeaponController weaponController;
+    
     
     
     [Header("CameraFields")] 
+    
     [SerializeField]
     private CameraMode cameraMode = CameraMode.FreeLook;
+    
+    
     
     [Header("MovementFields")] 
     
@@ -45,8 +55,8 @@ public class PlayerController : MonoBehaviour
     
     [SerializeField] 
     private AnimationCurve accelerationCurve;
+    
     private float timer = 0;
-
     
     [SerializeField] 
     private float rotationSpeed = 16f;
@@ -64,8 +74,13 @@ public class PlayerController : MonoBehaviour
     
 
     
-    // Update
-    
+    // Update / start
+
+    private void Start()
+    {
+        weaponController = GetComponent<WeaponController>();
+    }
+
     private void Update()
     {
         //sets the view and move directions (Camera and orientation of character)
@@ -79,6 +94,7 @@ public class PlayerController : MonoBehaviour
                 
                 case CameraMode.Aim:
                     SetDirectionAim();
+                    weaponController.AimWeapon(GameCamera);
                     break;
             }
         }
@@ -137,14 +153,13 @@ public class PlayerController : MonoBehaviour
     }
     private void SetDirectionAim()
     {
-        Vector3 viewDir = transform.position - new Vector3(GameCamera.position.x, transform.position.y, GameCamera.position.z);
+        Vector3 viewDir = AimLookAt.position - new Vector3(GameCamera.position.x, AimLookAt.position.y, GameCamera.position.z);
         orientation.forward = viewDir.normalized;
         
         
         moveDirection = orientation.forward * movementInput.y + orientation.right * movementInput.x;
 
-        if (moveDirection != Vector3.zero)
-            playerObj.forward = Vector3.Slerp(playerObj.forward, moveDirection.normalized, Time.deltaTime * rotationSpeed);
+        playerObj.forward = viewDir.normalized;
     }
 
     
@@ -152,7 +167,7 @@ public class PlayerController : MonoBehaviour
     
     
     
-    //otherActions
+    //Action functions
     
     public void Jump()
     {
@@ -162,7 +177,8 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
-        print("Shoot");
+        weaponController.CurrentWeaponRef.Shoot();
+        //print("Shoot");
     }
 
     public void SwitchCamera()
@@ -171,11 +187,14 @@ public class PlayerController : MonoBehaviour
         {
             case CameraMode.FreeLook:
                 cameraMode = CameraMode.Aim;
-                
+                FreeVCam.SetActive(false);
+                AimVCam.SetActive(true);
                 break;
 
             case CameraMode.Aim:
                 cameraMode = CameraMode.FreeLook;
+                FreeVCam.SetActive(true);
+                AimVCam.SetActive(false);
                 break;
         }
     }
@@ -188,16 +207,33 @@ public class PlayerController : MonoBehaviour
     public void Aim()
     {
         print("aiming");
+        SwitchCamera();
     }
 
 
     //CameraRelated Functions
 
-    private void EnableCamera()
+    public void EnableCamera()
     {
-        
+        switch (cameraMode)
+        {
+            case CameraMode.FreeLook:
+                FreeVCam.SetActive(true);
+                AimVCam.SetActive(false);
+                break;
+
+            case CameraMode.Aim:
+                FreeVCam.SetActive(false);
+                AimVCam.SetActive(true);
+                break;
+        }
     }
-    
+
+    public void DisableCamera()
+    {
+        FreeVCam.SetActive(false);
+        AimVCam.SetActive(false);
+    }
     
     public enum CameraMode
     {

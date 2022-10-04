@@ -76,12 +76,11 @@ public class GameManager : MonoBehaviour
         //Keyboard
         InputManager.OnMove        += players[n].UpdateMoveVec;
         InputManager.OnJump        += players[n].Jump;
-        InputManager.OnCameraSwap  += players[n].SwitchCamera;
         InputManager.OnWeaponSwap  += players[n].SwitchWeapon;
         
         
         //virtualCamera
-        players[n].FreeVCam.gameObject.SetActive(true);
+        players[n].EnableCamera();
         players[n].Selected = true;
     }
     public void UnbindPlayer(int n)
@@ -95,12 +94,11 @@ public class GameManager : MonoBehaviour
         //Keyboard
         InputManager.OnMove        -= players[n].UpdateMoveVec;
         InputManager.OnJump        -= players[n].Jump;
-        InputManager.OnCameraSwap  -= players[n].SwitchCamera;
         InputManager.OnWeaponSwap  -= players[n].SwitchWeapon;
         
         
         //virtualCamera
-        players[n].FreeVCam.gameObject.SetActive(false);
+        players[n].EnableCamera();
         players[n].Selected = false;
     }
 

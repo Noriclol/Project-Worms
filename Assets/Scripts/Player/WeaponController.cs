@@ -2,14 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WeaponController : MonoBehaviour
 {
     [Header("Weapon References")] 
-    public Gun Pistol;
-    public Gun Rifle;
-    public Gun ShotGun;
-    public Gun Sniper;
+    [SerializeField]
+    private Gun Pistol;
+    
+    [SerializeField]
+    private Gun Rifle;
+    
+    [SerializeField]
+    private Gun ShotGun;
+    
+    [SerializeField]
+    private Gun Sniper;
 
     [Header("GunSpawner Ref")] 
     public GameObject GunPickup;
@@ -23,8 +31,12 @@ public class WeaponController : MonoBehaviour
     public Transform InactiveWeapon;
 
     private GunSelection CurrentWeapon = GunSelection.secondary;
+    public Gun CurrentWeaponRef;
     private int currentShots = 0;
 
+    [SerializeField] 
+    private float AimAngleMult = 2f;
+    
 
     public void Start()
     {
@@ -32,6 +44,22 @@ public class WeaponController : MonoBehaviour
         UpdateWeapons();
     }
 
+    public void AimWeapon(Transform cameraTransform)
+    {
+        // ActiveWeapon.localRotation.Set
+        // (
+        //     cameraTransform.rotation.x, 
+        //     ActiveWeapon.rotation.y,
+        //     ActiveWeapon.rotation.z, 
+        //     ActiveWeapon.rotation.w
+        // );
+
+        var newRotation = new Quaternion(cameraTransform.rotation.x * AimAngleMult, 0, 0, 1);
+        ActiveWeapon.localRotation = newRotation;
+        // print($"ActiveWeapon {ActiveWeapon.localRotation}");
+        // print($"NewAim {newRotation}");
+        // print($"GameCamera {cameraTransform.rotation.x}");
+    }
 
     public void Equip(GunSelection slot, Gun gun)
     {
@@ -116,7 +144,22 @@ public class WeaponController : MonoBehaviour
     private void EquipStarterLoadout()
     {
         Secondary = Pistol;
-        //Equip(GunSelection.secondary, Pistol);
+
+        int randomGun = Random.Range(1, 3);
+        switch (randomGun)
+        {
+            case 1:
+                Primary = Rifle;
+                break;
+            case 2:
+                Primary = ShotGun;
+                break;
+            case 3:
+                Primary = Sniper;
+                break;
+        }
+
+        CurrentWeaponRef = Secondary;
     }
 
     public enum GunSelection

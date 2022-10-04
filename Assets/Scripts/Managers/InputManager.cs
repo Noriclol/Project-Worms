@@ -85,7 +85,12 @@ public class InputManager : MonoBehaviour
     
     private void Awake()
     {
+        if (controls != null)
+        {
+            return;
+        }
         controls = new InputMaster();
+
     }
 
     private void OnEnable()
@@ -94,7 +99,7 @@ public class InputManager : MonoBehaviour
         controls.Enable();
         
         
-        //TODO: CONTOLSETUP
+        //TODO: CONTOLSETUP ENABLE
         
         //UI
         pause = controls.UI.Pause;
@@ -139,7 +144,23 @@ public class InputManager : MonoBehaviour
 
     private void OnDisable()
     {
+
+        //TODO: CONTOLSETUP DISABLE
+        
         controls.Disable();
+        
+        pause.Disable();
+        
+        mouseDelta.Disable();
+        mousebtn1.Disable();
+        mousebtn2.Disable();
+        
+        move.Disable();
+        jump.Disable();
+        sWeapon.Disable();
+        sCam.Disable();
+        
+        //TODO: EVENTUNBIND
         
         pause.performed -= Event_UI_Pause;
         
@@ -153,7 +174,7 @@ public class InputManager : MonoBehaviour
         sWeapon.performed -= Event_Player_SwapWeapon;
         sCam.performed -= Event_Player_SwapCamera;
         
-        
+
     }
 
 

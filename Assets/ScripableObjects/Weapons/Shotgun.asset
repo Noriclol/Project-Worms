@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   GunPrefab: {fileID: 3230756562754366837, guid: 9b4f5e09ae56da546a1847746436289a, type: 3}
+  BulletPrefab: {fileID: 8155033102787758020, guid: 36f39b19c3709144d8ce64d070799bb4, type: 3}
   damage: 8
   accuracy: 25
   AllowedShots: 1
+  BulletsPerShot: 5
+  MuzzleForce: 400
