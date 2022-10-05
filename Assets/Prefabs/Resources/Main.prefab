@@ -64,9 +64,10 @@ MonoBehaviour:
   playerPrefab: {fileID: 8647594574370965050, guid: c165b87794dae04499b3040e64ba210d, type: 3}
   cameraPrefab: {fileID: 3200863315144779450, guid: 56735c7ae479e984797d0fb7d0b16bd2, type: 3}
   players: []
+  activePlayers: []
   GameCamera: {fileID: 0}
   playerCount: 1
-  teamCount: 1
+  teamCount: 2
   Selected: 0
   playerSpawnAreaSize: 20
   turn: 0

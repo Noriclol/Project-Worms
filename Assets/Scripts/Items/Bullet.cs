@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
 {
     public Rigidbody rb;
     public Collider collider;
-
+    public float damage;
     private void OnCollisionEnter(Collision other)
     {
         var hitTag = other.gameObject.tag;
@@ -15,11 +15,18 @@ public class Bullet : MonoBehaviour
         switch (hitTag)
         {
             case "Map":
-                //Destroy(this);
+                Destroy(this, 3f);
                 break;
+            
+            
             case "Player":
+                
                 print("Hit Player");
-                Destroy(this);
+                
+                var player = other.gameObject.GetComponent<Player>();
+                player.TakeDamage(damage);
+                
+                Destroy(gameObject);
                 break;
         }
         

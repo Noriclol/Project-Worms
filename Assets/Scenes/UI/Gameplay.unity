@@ -971,6 +971,8 @@ MonoBehaviour:
   Teamtxt: {fileID: 465198570}
   Playertxt: {fileID: 5988704}
   Turntxt: {fileID: 104728196}
+  HealthBar: {fileID: 2059060966}
+  StaminaBar: {fileID: 1599530609}
 --- !u!1 &1326345593
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,7 +1371,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.527
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

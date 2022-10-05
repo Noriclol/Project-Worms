@@ -17,7 +17,6 @@ public class Main : MonoBehaviour
     public static bool RunStartScene = true;
     public static bool DebugMsg = false;
     
-    
     //Singleton Stuff
     public static Main Instance { get { return instance; } }
     
@@ -46,9 +45,7 @@ public class Main : MonoBehaviour
         if (RunStartScene)
         {
             SceneHandler.LoadDefaultScene();
- 
         }
-        
     }
 
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mail;
 using TreeEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] 
     private WeaponController weaponController;
     
+    public Player player;
     
     
     [Header("CameraFields")] 
@@ -67,19 +69,17 @@ public class PlayerController : MonoBehaviour
     
     private Vector2 movementInput;
     private Vector3 moveDirection;
-    
 
-    
+
+    private float staminaDrainRun = 0.01f;
+
+    private float staminaDrainJump = 10f;
 
     
 
     
     // Update / start
 
-    private void Start()
-    {
-        weaponController = GetComponent<WeaponController>();
-    }
 
     private void Update()
     {
@@ -106,40 +106,51 @@ public class PlayerController : MonoBehaviour
     {
         if (Selected)
         {
-            SetMoveSpeed();
+            if (player.stamina >= staminaDrainRun)
+            {
+                SetMoveSpeed(1);
+
+                if (this.movementInput != Vector2.zero)
+                {
+                    player.DrainStamina(staminaDrainRun);
+                }
+            }
+            else
+            {
+                SetMoveSpeed(0);
+            }
+            
         }
-        
+
     }
 
-    
-
-    
     
     // Movement
     
     public void UpdateMoveVec(Vector2 movementInput)
     {
-        print($"Movment {movementInput}");
+        //print($"Movment {movementInput}");
 
         //resetTimer
         if (movementInput == Vector2.zero ||
             (this.movementInput == Vector2.zero && movementInput != Vector2.zero))
         {
             timer = 0;
-            print("timerReset");
+            //print("timerReset");
         }
         
         this.movementInput = movementInput;
     }
 
-    private void SetMoveSpeed()
+    private void SetMoveSpeed(int i)
     {
-        Vector3 newMovement = moveDirection.normalized * (TopSpeed * accelerationCurve.Evaluate(timer / topSpeedTime));
+
+        Vector3 newMovement = moveDirection.normalized * (TopSpeed * accelerationCurve.Evaluate(timer / topSpeedTime)) * (float)i;
         newMovement.y = rb.velocity.y;
         
         rb.velocity = newMovement;
     }
-
+    
 
     private void SetDirectionFree()
     {
@@ -171,14 +182,17 @@ public class PlayerController : MonoBehaviour
     
     public void Jump()
     {
-        print($"Jump");
-        rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+        //print($"Jump");
+        if (player.stamina >= staminaDrainJump)
+        {
+            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+            player.DrainStamina(staminaDrainJump);
+        }
     }
 
     public void Shoot()
     {
-        weaponController.CurrentWeaponRef.Shoot();
-        //print("Shoot");
+        weaponController.Shoot();
     }
 
     public void SwitchCamera()
@@ -202,11 +216,12 @@ public class PlayerController : MonoBehaviour
     public void SwitchWeapon()
     {
         print("Switching weapon");
+        weaponController.SwitchSelected();
     }
 
     public void Aim()
     {
-        print("aiming");
+        //print("aiming");
         SwitchCamera();
     }
 
@@ -234,6 +249,15 @@ public class PlayerController : MonoBehaviour
         FreeVCam.SetActive(false);
         AimVCam.SetActive(false);
     }
+    
+    //misc functions
+    
+    
+
+    
+    
+    
+    //enums
     
     public enum CameraMode
     {

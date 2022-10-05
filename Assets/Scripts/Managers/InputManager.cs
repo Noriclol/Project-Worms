@@ -11,14 +11,6 @@ public class InputManager : MonoBehaviour
     private InputMaster controls;
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     //UI
     private InputAction pause;
     

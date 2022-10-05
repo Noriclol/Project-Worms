@@ -18,4 +18,4 @@ MonoBehaviour:
   accuracy: 25
   AllowedShots: 1
   BulletsPerShot: 5
-  MuzzleForce: 400
+  MuzzleVelocity: 50

@@ -13,43 +13,12 @@ public class Gun : ScriptableObject
 
     public GameObject BulletPrefab;
     
-    private Transform BulletSpawnPosition;
     [Header("Public Fields")]
     public float damage;
     //accuracy in degrees in a cone originating at the bulletspawn
     public float accuracy;
     public int AllowedShots;
     public int BulletsPerShot;
-    public float MuzzleForce;
+    public float MuzzleVelocity;
     
-    
-    
-    public void OnValidate()
-    {
-        //BulletSpawnPosition = GunPrefab.
-    }
-
-    public void Shoot()
-    {
-        Debug.Log($"{GunPrefab.name} Shoot");
-        SpawnBullet();
-
-        //do effects
-    }
-    
-    private void SpawnBullet()
-    {
-        //Instantiate a bulletInstance
-        //...
-        var newBullet = Instantiate(BulletPrefab, BulletSpawnPosition);
-
-
-        //apply correct force and direction to bullet
-        
-        //newBullet.GetComponent<Bullet>().rb.AddForce();
-        
-    }
-    
-
-
 }

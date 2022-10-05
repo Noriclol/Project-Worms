@@ -30,6 +30,10 @@ public class WeaponController : MonoBehaviour
     public Transform ActiveWeapon;
     public Transform InactiveWeapon;
 
+    private Transform BulletSpawnPosition;
+
+    
+    
     private GunSelection CurrentWeapon = GunSelection.secondary;
     public Gun CurrentWeaponRef;
     private int currentShots = 0;
@@ -41,26 +45,42 @@ public class WeaponController : MonoBehaviour
     public void Start()
     {
         EquipStarterLoadout();
-        UpdateWeapons();
+        
     }
 
     public void AimWeapon(Transform cameraTransform)
     {
-        // ActiveWeapon.localRotation.Set
-        // (
-        //     cameraTransform.rotation.x, 
-        //     ActiveWeapon.rotation.y,
-        //     ActiveWeapon.rotation.z, 
-        //     ActiveWeapon.rotation.w
-        // );
-
         var newRotation = new Quaternion(cameraTransform.rotation.x * AimAngleMult, 0, 0, 1);
         ActiveWeapon.localRotation = newRotation;
-        // print($"ActiveWeapon {ActiveWeapon.localRotation}");
-        // print($"NewAim {newRotation}");
-        // print($"GameCamera {cameraTransform.rotation.x}");
     }
 
+    public void Shoot()
+    {
+        //Debug.Log($"{GunPrefab.name} Shoot");
+        SpawnBullet();
+
+        //do effects
+    }
+    
+    private void SpawnBullet()
+    {
+        for (int i = 0; i < CurrentWeaponRef.BulletsPerShot; i++)
+        {
+            //Instantiate a bulletInstance
+            var newBullet = Instantiate(CurrentWeaponRef.BulletPrefab, BulletSpawnPosition.position, BulletSpawnPosition.rotation);
+
+            //apply correct force and direction to bullet
+            var bulletscript = newBullet.GetComponent<Bullet>();
+            bulletscript.damage = CurrentWeaponRef.damage;
+            bulletscript.rb.AddForce(BulletSpawnPosition.forward * CurrentWeaponRef.MuzzleVelocity, ForceMode.VelocityChange);
+        }
+    }
+    
+    
+    
+    
+    
+    
     public void Equip(GunSelection slot, Gun gun)
     {
         //try to put new equipment in primary
@@ -113,7 +133,13 @@ public class WeaponController : MonoBehaviour
                 //Attach
                 Active.transform.SetParent(ActiveWeapon.transform, false);
                 Inactive.transform.SetParent(InactiveWeapon.transform, false);
+
+                BulletSpawnPosition = Active.transform.GetChild(0);
+                
+                print($"childname = {BulletSpawnPosition.name}");
                 break;
+            
+            
             case GunSelection.secondary:
                 //Instantiate
                 Active = Instantiate(Secondary.GunPrefab, ActiveWeapon);
@@ -121,31 +147,37 @@ public class WeaponController : MonoBehaviour
                 //Attach
                 Active.transform.SetParent(ActiveWeapon.transform, false);
                 Inactive.transform.SetParent(InactiveWeapon.transform, false);
+                
+                BulletSpawnPosition = Active.transform.GetChild(0);
                 break;
         }
     }
 
-    private void SwitchSelected()
+    
+    
+    [ContextMenu("Switch Gun")]
+    public void SwitchSelected()
     {
 
         switch (CurrentWeapon)
         {
             case GunSelection.primary:
-                
+                CurrentWeapon = GunSelection.secondary;
                 break;
 
 
             case GunSelection.secondary:
-
+                CurrentWeapon = GunSelection.primary;
                 break;
         }
+        UpdateWeapons();
     }
 
     private void EquipStarterLoadout()
     {
         Secondary = Pistol;
-
-        int randomGun = Random.Range(1, 3);
+        
+        int randomGun = Random.Range(1, 4);
         switch (randomGun)
         {
             case 1:
@@ -157,9 +189,14 @@ public class WeaponController : MonoBehaviour
             case 3:
                 Primary = Sniper;
                 break;
+            case 4:
+                Primary = Sniper;
+                break;
         }
-
+        
         CurrentWeaponRef = Secondary;
+        
+        UpdateWeapons();
     }
 
     public enum GunSelection
