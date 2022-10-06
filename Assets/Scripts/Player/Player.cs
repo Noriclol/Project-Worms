@@ -18,10 +18,13 @@ public class Player : MonoBehaviour
         if ((health -= damage) <= 0)
         {
             //die
-            Main.GameManager.PlayerDeath(playerID);
+            print("Player Died");
+            Main.GameManager.PlayerDeath(gameObject.GetComponent<PlayerController>());
             return;
         }
+        
         health -= damage;
+        print($"Player Survived. health left: {health}");
     }
 
     public void DrainStamina(float stamina)

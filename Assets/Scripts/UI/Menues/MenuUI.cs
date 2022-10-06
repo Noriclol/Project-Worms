@@ -24,7 +24,7 @@ public class MenuUI : MonoBehaviour
     
     public void PlayBtn()
     {
-        Main.SceneHandler.LoadGame("CharacterTest");
+        Main.SceneHandler.LoadGame("VeryCoolMap");
     }
 
     public void SettingsBtn()

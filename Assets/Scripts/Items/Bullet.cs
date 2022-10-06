@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
         switch (hitTag)
         {
             case "Map":
-                Destroy(this, 3f);
+                Destroy(gameObject);
                 break;
             
             

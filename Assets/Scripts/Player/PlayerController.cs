@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mail;
-using TreeEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,7 +32,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
 
     [SerializeField] 
-    private WeaponController weaponController;
+    public WeaponController weaponController;
     
     public Player player;
     
@@ -71,15 +70,24 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection;
 
 
-    private float staminaDrainRun = 0.01f;
+    public float staminaDrainRun = 0.1f;
 
-    private float staminaDrainJump = 10f;
+    public float staminaDrainJump = 10f;
 
+    public int currentShots = 0;
+    public int currentAllowedShots = 0;
     
+    
+    
+    public event Action<PlayerController> EventWeaponUpdate = delegate {};
 
     
     // Update / start
 
+    private void Start()
+    {
+        EventWeaponUpdate(this);
+    }
 
     private void Update()
     {
@@ -192,7 +200,18 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
+        
         weaponController.Shoot();
+        currentShots++;
+
+        if (currentShots >= weaponController.CurrentWeaponRef.AllowedShots)
+        {
+            //reset turn Attributes
+            
+            Main.GameManager.PlayerNext();
+        }
+
+        EventWeaponUpdate(this);
     }
 
     public void SwitchCamera()
@@ -217,6 +236,8 @@ public class PlayerController : MonoBehaviour
     {
         print("Switching weapon");
         weaponController.SwitchSelected();
+        currentAllowedShots = weaponController.CurrentWeaponRef.AllowedShots;
+        EventWeaponUpdate(this);
     }
 
     public void Aim()

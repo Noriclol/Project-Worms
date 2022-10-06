@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public List<GameObject> spawnPoints;
     void Start()
     {
+        Main.GameManager.LevelManager = this;
         Main.GameManager.Init();
     }
 

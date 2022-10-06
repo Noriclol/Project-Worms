@@ -36,16 +36,19 @@ public class WeaponController : MonoBehaviour
     
     private GunSelection CurrentWeapon = GunSelection.secondary;
     public Gun CurrentWeaponRef;
-    private int currentShots = 0;
 
     [SerializeField] 
     private float AimAngleMult = 2f;
-    
 
+    public bool WeaponLock = false;
+    
+    public event Action EventWeaponInit = delegate {};
+
+    
     public void Start()
     {
         EquipStarterLoadout();
-        
+        //EventWeaponInit();
     }
 
     public void AimWeapon(Transform cameraTransform)
@@ -57,8 +60,10 @@ public class WeaponController : MonoBehaviour
     public void Shoot()
     {
         //Debug.Log($"{GunPrefab.name} Shoot");
+        if (!WeaponLock)
+            WeaponLock = true;
+        
         SpawnBullet();
-
         //do effects
     }
     
@@ -81,32 +86,19 @@ public class WeaponController : MonoBehaviour
     
     
     
-    public void Equip(GunSelection slot, Gun gun)
-    {
-        //try to put new equipment in primary
-        
-        //primary available
-        if (!Primary && Secondary)
-        {
-            Primary = gun;
-            return;
-        }
-        SwitchSelected();
-    }
-
-    public void ToggleActiveWeapon()
-    {
-        switch (CurrentWeapon)
-        {
-            case GunSelection.primary:
-                CurrentWeapon = GunSelection.secondary;
-                break;
-            case GunSelection.secondary:
-                CurrentWeapon = GunSelection.primary;
-                break;
-        }
-    }
-
+    // public void Equip(GunSelection slot, Gun gun)
+    // {
+    //     //try to put new equipment in primary
+    //     
+    //     //primary available
+    //     if (!Primary && Secondary)
+    //     {
+    //         Primary = gun;
+    //         return;
+    //     }
+    //     SwitchSelected();
+    // }
+    
 
     private void UpdateWeapons()
     {
@@ -135,8 +127,8 @@ public class WeaponController : MonoBehaviour
                 Inactive.transform.SetParent(InactiveWeapon.transform, false);
 
                 BulletSpawnPosition = Active.transform.GetChild(0);
+                CurrentWeaponRef = Primary;
                 
-                print($"childname = {BulletSpawnPosition.name}");
                 break;
             
             
@@ -149,6 +141,7 @@ public class WeaponController : MonoBehaviour
                 Inactive.transform.SetParent(InactiveWeapon.transform, false);
                 
                 BulletSpawnPosition = Active.transform.GetChild(0);
+                CurrentWeaponRef = Secondary;
                 break;
         }
     }
@@ -159,6 +152,11 @@ public class WeaponController : MonoBehaviour
     public void SwitchSelected()
     {
 
+        if (WeaponLock)
+        {
+            return;
+        }
+        
         switch (CurrentWeapon)
         {
             case GunSelection.primary:
@@ -194,7 +192,7 @@ public class WeaponController : MonoBehaviour
                 break;
         }
         
-        CurrentWeaponRef = Secondary;
+        //CurrentWeaponRef = Secondary;
         
         UpdateWeapons();
     }

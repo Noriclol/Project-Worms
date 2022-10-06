@@ -13,17 +13,22 @@ public class GameManager : MonoBehaviour
 
 
     private List<Color> teamColors;
+    public List<Material> teamMaterials;
+
+    public List<GameObject> teamSpawns;
+    
     //Instance Management
-    public List<PlayerController> players;
-    public List<Player> activePlayers;
+    public List<PlayerController> Players;
     
-    
+    public LevelManager LevelManager;
     
     
     public GameObject GameCamera;
     
     public int playerCount = 1;
     public int teamCount = 2;
+    public int winningTeam = -1;
+    
     
     public int Selected = 0;
     public float playerSpawnAreaSize = 10f;
@@ -43,54 +48,76 @@ public class GameManager : MonoBehaviour
     
     
     
-    Vector3 GetPosinArea()
-    {
-        return new Vector3(
-            Random.Range(playerSpawnAreaSize, -playerSpawnAreaSize),
-            0,
-            Random.Range(playerSpawnAreaSize, -playerSpawnAreaSize)
-            );
-    }
+
+    
+    
+    
+    
+    //INIT and CLEAR
     
     public void Init()
     {
-        
+        //fetch spawnpoints for number of teams
+        for (int i = 0; i < teamCount; i++)
+        {
+            
+            //add each team and set color to 
+            teamSpawns.Add(LevelManager.spawnPoints[i]);
+            teamSpawns[i].gameObject.GetComponentInChildren<MeshRenderer>().material.color = teamMaterials[i].color;
+        }
         
         //camera Instantiation
         GameCamera = Instantiate(cameraPrefab);
         
-        //List Instantiations
-        teamColors = new List<Color>();
-
-        for (int i = 0; i < teamCount; i++)
-        {
-            teamColors.Add(Random.ColorHSV());
-        }
+        GeneratePlayersSetColors();
         
-        
-        for (int i = 0; i < playerCount; i++) {
-            for (int j = 0; j < teamCount; j++)
-            {
-                var newPlayer = Instantiate(playerPrefab, GetPosinArea(), Quaternion.identity);
-                
-                var newPlayerController = newPlayer.GetComponent<PlayerController>();
-                newPlayerController.GameCamera = GameCamera.transform;
-                newPlayerController.playerObj.GetComponent<MeshRenderer>().material.color = teamColors[j];
-                
-                var newPlayerScript = newPlayer.GetComponent<Player>();
-                newPlayerScript.playerID = players.Count;
-                newPlayerScript.teamID = j;
-                
-                players.Add(newPlayerController);
-                activePlayers.Add(newPlayerScript);
-            }
-        }
         PlayerBind(Selected);
+    }
+    
+    
+    public void ClearGameManager()
+    {
+        Players.Clear();
+        teamSpawns.Clear();
+        winningTeam = -1;
+        turn = 0;
+        Selected = 0;
     }
     
     
     
     
+    Vector3 GetPosinArea(Vector3 origo)
+    {
+        return new Vector3(
+            origo.x + Random.Range(playerSpawnAreaSize, -playerSpawnAreaSize),
+            origo.y,
+            origo.z + Random.Range(playerSpawnAreaSize, -playerSpawnAreaSize)
+        );
+    }
+    
+    
+    
+    private void GeneratePlayersSetColors()
+    {
+        for (int i = 0; i < playerCount; i++)
+        {
+            for (int j = 0; j < teamCount; j++)
+            {
+                var newPlayer = Instantiate(playerPrefab, GetPosinArea(teamSpawns[j].transform.position), Quaternion.identity);
+
+                var newPlayerController = newPlayer.GetComponent<PlayerController>();
+                newPlayerController.GameCamera = GameCamera.transform;
+                newPlayerController.playerObj.GetComponent<MeshRenderer>().material = teamMaterials[j];
+
+                var newPlayerScript = newPlayer.GetComponent<Player>();
+                newPlayerScript.playerID = Players.Count;
+                newPlayerScript.teamID = j;
+
+                Players.Add(newPlayerController);
+            }
+        }
+    }
     //PlayerManipulation
 
     public void PlayerBind(int n)
@@ -99,56 +126,53 @@ public class GameManager : MonoBehaviour
         //binds
 
         //Mouse
-        InputManager.OnMouseClick1 +=
-            players[n].Shoot; //InputManager.OnMouseClick1 += players.ElementAtOrDefault(n)!.Shoot;
-        InputManager.OnMouseClick2 += players[n].Aim;
+        InputManager.OnMouseClick1 += Players[n].Shoot; //InputManager.OnMouseClick1 += players.ElementAtOrDefault(n)!.Shoot;
+        InputManager.OnMouseClick2 += Players[n].Aim;
         //Keyboard
-        InputManager.OnMove += players[n].UpdateMoveVec;
-        InputManager.OnJump += players[n].Jump;
-        InputManager.OnWeaponSwap += players[n].SwitchWeapon;
+        InputManager.OnMove += Players[n].UpdateMoveVec;
+        InputManager.OnJump += Players[n].Jump;
+        InputManager.OnWeaponSwap += Players[n].SwitchWeapon;
 
 
         //virtualCamera
-        players[n].EnableCamera();
-        players[n].Selected = true;
+        Players[n].EnableCamera();
+        Players[n].Selected = true;
 
-        Event_UIUpdate(players[Selected]);
+        Event_UIUpdate(Players[Selected]);
     }
 
     public void PlayerUnbind(int n)
     {
         
-        //binds
-        
         //Mouse
-        InputManager.OnMouseClick1 -= players[n].Shoot;
-        InputManager.OnMouseClick2 -= players[n].Aim;
+        InputManager.OnMouseClick1 -= Players[n].Shoot;
+        InputManager.OnMouseClick2 -= Players[n].Aim;
         //Keyboard
-        InputManager.OnMove        -= players[n].UpdateMoveVec;
-        InputManager.OnJump        -= players[n].Jump;
-        InputManager.OnWeaponSwap  -= players[n].SwitchWeapon;
+        InputManager.OnMove        -= Players[n].UpdateMoveVec;
+        InputManager.OnJump        -= Players[n].Jump;
+        InputManager.OnWeaponSwap  -= Players[n].SwitchWeapon;
         
         
         //virtualCamera
-        players[n].DisableCamera();
-        players[n].Selected = false;
+        Players[n].DisableCamera();
+        Players[n].Selected = false;
+        
+        Players[n].player.stamina = 100f;
+        Players[n].currentShots = 0;
+        Players[n].weaponController.WeaponLock = false;
+
     }
 
     
     [ContextMenu("Next Player")]
     public void PlayerNext()
     {
-        if (Selected + 1 <= players.Count - 1)
+        if (Selected < Players.Count - 1)
         {
             PlayerUnbind(Selected);
             
             //Iterate to next active player
             Selected++;
-            while (Selected != activePlayers[Selected].playerID)
-            {
-                Selected++;
-            }
-            
 
             PlayerBind(Selected);
             
@@ -172,10 +196,16 @@ public class GameManager : MonoBehaviour
     
 
 
-    public void PlayerDeath(int playerID)
+    public void PlayerDeath(PlayerController player)
     {
-        Destroy(players[playerID].gameObject);
-        players.RemoveAt(playerID);
+        if (player == Players[Selected])
+        {
+            PlayerNext();
+        }
+        
+        Players.Remove(player);
+        Destroy(player.gameObject);
+        
         CheckTeamsAlive();
     }
 
@@ -185,9 +215,9 @@ public class GameManager : MonoBehaviour
         int teamsAliveCounter;
         List<int> teamsFound = new List<int>();
 
-        foreach (var player in activePlayers)
+        foreach (var player in Players)
         {
-            var ID = player.teamID;
+            var ID = player.player.teamID;
 
             if (teamsFound.Contains(ID))
                 continue;
@@ -198,15 +228,25 @@ public class GameManager : MonoBehaviour
 
         teamsAliveCounter = teamsFound.Count;
 
+        print($"teams alive = {teamsAliveCounter}");
+
+
         if (teamsAliveCounter <= 1)
+        {
+            winningTeam = teamsFound[0];
             EndGameSession();
+        }
     }
 
     public void EndGameSession()
     {
-        
+        Event_EndGame();
+        //PlayerUnbind(Players.Count - 1);
+        Main.InputManager.SetMouseState(InputManager.MouseState.UI);
+        //ClearGameManager();
         print($"Only 1 team left, ending session");
     }
+
 
 }
 

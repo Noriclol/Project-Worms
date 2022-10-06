@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67d97d028a598a4e826813c056efd48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelManager: {fileID: 0}
 --- !u!114 &5836255852575046566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,13 +62,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 8647594574370965050, guid: c165b87794dae04499b3040e64ba210d, type: 3}
   cameraPrefab: {fileID: 3200863315144779450, guid: 56735c7ae479e984797d0fb7d0b16bd2, type: 3}
+  teamMaterials:
+  - {fileID: 2100000, guid: 5c510c1992ffdb74c9b7218a06942f0d, type: 2}
+  - {fileID: 2100000, guid: 099048ddcd8e87f4683933f138c5c526, type: 2}
+  - {fileID: 2100000, guid: 106e1270042259948a5bd209a0b17720, type: 2}
+  - {fileID: 2100000, guid: 9954c008cc1bebc47b1fb897eb793396, type: 2}
+  teamSpawns: []
   players: []
   activePlayers: []
+  LevelManager: {fileID: 0}
   GameCamera: {fileID: 0}
   playerCount: 1
   teamCount: 2
   Selected: 0
-  playerSpawnAreaSize: 20
+  playerSpawnAreaSize: 3
   turn: 0
 --- !u!114 &4549433906355142849
 MonoBehaviour:

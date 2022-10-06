@@ -12,6 +12,7 @@ public class PauseUI : MonoBehaviour
     public void ReturnBtn()
     {
         Main.SceneHandler.Load("Menu");
+        Main.GameManager.ClearGameManager();
     }
     
 }
