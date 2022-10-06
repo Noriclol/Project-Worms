@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 49daa8ac9a013b144b8e098207e44b78, type: 2}
+  - {fileID: 2100000, guid: f53beb314621e3d459145c9c9935a61b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6576897894364228331}
   - component: {fileID: 3167116797245249771}
   m_Layer: 0
-  m_Name: Casing
+  m_Name: Shell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

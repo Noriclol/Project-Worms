@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GunPrefab: {fileID: 8423638176364573312, guid: 3a95b6707a3e39f4f80c7b5835c4c83c, type: 3}
   BulletPrefab: {fileID: 8155033102787758020, guid: 0a7b4c741b5a3774da964a5855a858fc, type: 3}
+  ShellCasingPrefab: {fileID: 8155033102787758020, guid: 8dac0f58027ebb74c9f69af38a55a86d, type: 3}
   damage: 20
   accuracy: 10
   AllowedShots: 3
   BulletsPerShot: 1
-  MuzzleVelocity: 50
+  MuzzleVelocity: 262

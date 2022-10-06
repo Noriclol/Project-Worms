@@ -5,4 +5,5 @@ using UnityEngine;
 public class GunComponents : MonoBehaviour
 {
     public Transform bulletspawn;
+    public Transform casingspawn;
 }

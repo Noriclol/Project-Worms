@@ -13,6 +13,8 @@ public class Gun : ScriptableObject
 
     public GameObject BulletPrefab;
     
+    public GameObject ShellCasingPrefab;
+    
     [Header("Public Fields")]
     public float damage;
     //accuracy in degrees in a cone originating at the bulletspawn
