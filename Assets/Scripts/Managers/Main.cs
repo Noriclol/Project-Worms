@@ -15,7 +15,6 @@ public class Main : MonoBehaviour
 
     //CONFIC //will move to separate script when it becomes unwieldy
     public static bool RunStartScene = true;
-    public static bool DebugMsg = false;
     
     //Singleton Stuff
     public static Main Instance { get { return instance; } }

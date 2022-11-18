@@ -24,12 +24,7 @@ public class MenuUI : MonoBehaviour
     
     public void PlayBtn()
     {
-        Main.SceneHandler.LoadGame("VeryCoolMap");
-    }
-
-    public void SettingsBtn()
-    {
-        Main.SceneHandler.Load("Settings");
+        Main.SceneHandler.LoadGame("GameMap");
     }
 
     public void ExitBtn()

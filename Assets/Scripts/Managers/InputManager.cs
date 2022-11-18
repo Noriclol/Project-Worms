@@ -81,13 +81,13 @@ public class InputManager : MonoBehaviour
         {
             return;
         }
-        controls = new InputMaster();
+        
 
     }
 
     private void OnEnable()
     {
-        
+        controls = new InputMaster();
         controls.Enable();
         
         

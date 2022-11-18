@@ -18,7 +18,10 @@ public class GameManager : MonoBehaviour
     public List<GameObject> teamSpawns;
     
     //Instance Management
-    public List<PlayerController> Players;
+    public LinkedList<PlayerController> Players = new LinkedList<PlayerController>();
+    private LinkedListNode<PlayerController> currentPlayer;
+    
+    
     
     public LevelManager LevelManager;
     
@@ -47,11 +50,26 @@ public class GameManager : MonoBehaviour
     public event Action<PlayerController> Event_UIUpdate = delegate {};
     
     
+    //Events UI Slider panel
     
-
+    public event Action<float> Event_UI_Health = delegate {};
+    
+    public event Action<float> Event_UI_Stamina = delegate {};
+    
+    
+    //Events UI WeaponPanel
+    
+    public event Action<int, int> Event_UI_Shots = delegate {};
+    public event Action<bool> Event_UI_WeaponLock = delegate {};
     
     
     
+    //Events UI InfoPanel
+    public event Action<int> Event_UI_Player = delegate {};
+    
+    public event Action<int> Event_UI_Team = delegate {};
+    
+    public event Action<int> Event_UI_Turn = delegate {};
     
     //INIT and CLEAR
     
@@ -71,7 +89,7 @@ public class GameManager : MonoBehaviour
         
         GeneratePlayersSetColors();
         
-        PlayerBind(Selected);
+        //fix UI
     }
     
     
@@ -83,8 +101,22 @@ public class GameManager : MonoBehaviour
         turn = 0;
         Selected = 0;
     }
-    
-    
+
+    private void UpdateUI()
+    {
+        var sPlayer = currentPlayer.Value;
+        
+        
+        Event_UI_Shots.Invoke(sPlayer.currentShots, sPlayer.currentAllowedShots);
+        Event_UI_WeaponLock.Invoke(sPlayer.weaponController.WeaponLock);
+        
+        Event_UI_Health.Invoke(sPlayer.player.health);
+        Event_UI_Stamina.Invoke(sPlayer.player.stamina);
+        
+        Event_UI_Player.Invoke(sPlayer.player.playerID);
+        Event_UI_Team.Invoke(sPlayer.player.teamID);
+        Event_UI_Turn.Invoke(turn);
+    }
     
     
     Vector3 GetPosinArea(Vector3 origo)
@@ -114,83 +146,92 @@ public class GameManager : MonoBehaviour
                 newPlayerScript.playerID = Players.Count;
                 newPlayerScript.teamID = j;
 
-                Players.Add(newPlayerController);
+                Players.AddLast(newPlayerController);
             }
         }
+        currentPlayer = Players.First;
+        PlayerBind();
     }
     //PlayerManipulation
 
-    public void PlayerBind(int n)
+    public void PlayerBind()
     {
 
         //binds
 
         //Mouse
-        InputManager.OnMouseClick1 += Players[n].Shoot; //InputManager.OnMouseClick1 += players.ElementAtOrDefault(n)!.Shoot;
-        InputManager.OnMouseClick2 += Players[n].Aim;
+        InputManager.OnMouseClick1 += currentPlayer.Value.Shoot; //InputManager.OnMouseClick1 += players.ElementAtOrDefault(n)!.Shoot;
+        InputManager.OnMouseClick2 += currentPlayer.Value.Aim;
         //Keyboard
-        InputManager.OnMove += Players[n].UpdateMoveVec;
-        InputManager.OnJump += Players[n].Jump;
-        InputManager.OnWeaponSwap += Players[n].SwitchWeapon;
+        InputManager.OnMove += currentPlayer.Value.UpdateMoveVec;
+        InputManager.OnJump += currentPlayer.Value.Jump;
+        InputManager.OnWeaponSwap += currentPlayer.Value.SwitchWeapon;
 
 
         //virtualCamera
-        Players[n].EnableCamera();
-        Players[n].Selected = true;
+        currentPlayer.Value.EnableCamera();
+        currentPlayer.Value.Selected = true;
 
-        Event_UIUpdate(Players[Selected]);
+
+        currentPlayer.Value.EventUIUpdate += UpdateUI;
+
+        currentPlayer.Value.InvokeUIUpdate();
+        //Players[Selected].EventWeaponUpdate(this);
     }
 
-    public void PlayerUnbind(int n)
+    public void PlayerUnbind()
     {
         
         //Mouse
-        InputManager.OnMouseClick1 -= Players[n].Shoot;
-        InputManager.OnMouseClick2 -= Players[n].Aim;
+        InputManager.OnMouseClick1 -= currentPlayer.Value.Shoot;
+        InputManager.OnMouseClick2 -= currentPlayer.Value.Aim;
         //Keyboard
-        InputManager.OnMove        -= Players[n].UpdateMoveVec;
-        InputManager.OnJump        -= Players[n].Jump;
-        InputManager.OnWeaponSwap  -= Players[n].SwitchWeapon;
+        InputManager.OnMove        -= currentPlayer.Value.UpdateMoveVec;
+        InputManager.OnJump        -= currentPlayer.Value.Jump;
+        InputManager.OnWeaponSwap  -= currentPlayer.Value.SwitchWeapon;
         
         
         //virtualCamera
-        Players[n].DisableCamera();
-        Players[n].Selected = false;
+        currentPlayer.Value.DisableCamera();
+        currentPlayer.Value.Selected = false;
         
-        Players[n].player.stamina = 100f;
-        Players[n].currentShots = 0;
-        Players[n].weaponController.WeaponLock = false;
+        currentPlayer.Value.player.stamina = 100f;
+        currentPlayer.Value.currentShots = 0;
+        currentPlayer.Value.weaponController.WeaponLock = false;
 
+        currentPlayer.Value.EventUIUpdate -= UpdateUI;
+        
     }
 
-    
+    #region plznolook
+
+    private void Update()
+    {
+        if (currentPlayer != null && currentPlayer.Value)
+            currentPlayer.Value.InvokeUIUpdate();
+    }
+
+    #endregion
+
+
+
     [ContextMenu("Next Player")]
     public void PlayerNext()
     {
-        if (Selected < Players.Count - 1)
+        PlayerUnbind();
+        if (currentPlayer.Value == Players.Last.Value)
         {
-            PlayerUnbind(Selected);
-            
-            //Iterate to next active player
-            Selected++;
-
-            PlayerBind(Selected);
-            
-            Event_NextPlayer();
+            currentPlayer = Players.First;
+            turn++;
+            Event_NextTurn();
         }
         else
         {
-            PlayerUnbind(Selected);
+            currentPlayer = currentPlayer.Next;
             
-            Selected = 0;
-            turn++;
-            
-            PlayerBind(Selected);
-
-            Event_NextPlayer();
-            Event_NextTurn();
-
         }
+        Event_NextPlayer();
+        PlayerBind();
     }
     
     
@@ -198,7 +239,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDeath(PlayerController player)
     {
-        if (player == Players[Selected])
+        if (player == currentPlayer.Value)
         {
             PlayerNext();
         }
@@ -240,11 +281,13 @@ public class GameManager : MonoBehaviour
 
     public void EndGameSession()
     {
+        PlayerUnbind();
+        playerCount = 1;
+        teamCount = 2;
         Event_EndGame();
-        //PlayerUnbind(Players.Count - 1);
         Main.InputManager.SetMouseState(InputManager.MouseState.UI);
         //ClearGameManager();
-        print($"Only 1 team left, ending session");
+        //print($"Only 1 team left, ending session");
     }
 
 

@@ -79,16 +79,20 @@ public class PlayerController : MonoBehaviour
     
     
     
-    public event Action<PlayerController> EventWeaponUpdate = delegate {};
+    public event Action EventUIUpdate = delegate {};
 
     
     // Update / start
 
     private void Start()
     {
-        EventWeaponUpdate(this);
+        print("PlayerLoaded");
     }
 
+    public void InvokeUIUpdate() => EventUIUpdate.Invoke();
+
+    
+    
     private void Update()
     {
         //sets the view and move directions (Camera and orientation of character)
@@ -155,6 +159,11 @@ public class PlayerController : MonoBehaviour
 
         Vector3 newMovement = moveDirection.normalized * (TopSpeed * accelerationCurve.Evaluate(timer / topSpeedTime)) * (float)i;
         newMovement.y = rb.velocity.y;
+
+        if (newMovement.magnitude > 0.01f)
+            EventUIUpdate.Invoke();
+            
+        
         
         rb.velocity = newMovement;
     }
@@ -203,7 +212,9 @@ public class PlayerController : MonoBehaviour
         
         weaponController.Shoot();
         currentShots++;
-
+        
+        EventUIUpdate.Invoke();
+        
         if (currentShots >= weaponController.CurrentWeaponRef.AllowedShots)
         {
             //reset turn Attributes
@@ -211,7 +222,7 @@ public class PlayerController : MonoBehaviour
             Main.GameManager.PlayerNext();
         }
 
-        EventWeaponUpdate(this);
+        
     }
 
     public void SwitchCamera()
@@ -237,7 +248,7 @@ public class PlayerController : MonoBehaviour
         print("Switching weapon");
         weaponController.SwitchSelected();
         currentAllowedShots = weaponController.CurrentWeaponRef.AllowedShots;
-        EventWeaponUpdate(this);
+        EventUIUpdate.Invoke();
     }
 
     public void Aim()

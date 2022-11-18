@@ -142,8 +142,11 @@ public class WeaponController : MonoBehaviour
                 
                 BulletSpawnPosition = Active.transform.GetChild(0);
                 CurrentWeaponRef = Secondary;
+                
                 break;
         }
+        gameObject.GetComponent<PlayerController>().currentAllowedShots = CurrentWeaponRef.AllowedShots;
+        gameObject.GetComponent<PlayerController>().InvokeUIUpdate();
     }
 
     
@@ -191,6 +194,8 @@ public class WeaponController : MonoBehaviour
                 Primary = Sniper;
                 break;
         }
+        
+        
         
         //CurrentWeaponRef = Secondary;
         

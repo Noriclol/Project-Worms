@@ -2,11 +2,30 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
+    
+    [Header("Sliders")]
+    
+    [SerializeField] 
+    private Slider HealthBar, StaminaBar;
+    
+    
+    [Header("Weapon")]
+    
+    [SerializeField]
+    private TMP_Text ShotsLefttxt;
+    
+    [SerializeField] 
+    private TMP_Text WeaponLockText;
+    
+    
+    [Header("Info")]
+    
     [SerializeField]
     private TMP_Text Teamtxt;
     
@@ -16,40 +35,47 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private TMP_Text Turntxt;
 
-    [SerializeField]
-    private TMP_Text ShotsLefttxt;
+    [Header("WinPanel")]
 
     [SerializeField] 
     private GameObject WinBox;
-
-
+    
     [SerializeField] 
     private TMP_Text WinText;
-    
-    
-    
-    [SerializeField] 
-    private Slider HealthBar, StaminaBar;
 
-    private PlayerController lastReferencedPlayer;
     
     
     private void OnEnable()
     {
-        Main.GameManager.Event_UIUpdate += Rebind;
 
 
+        Main.GameManager.Event_UI_Shots += SetShotsLeftText;
+        Main.GameManager.Event_UI_WeaponLock += SetWeaponLockText;
         
+        Main.GameManager.Event_UI_Health += SetHealthSlider;
+        Main.GameManager.Event_UI_Stamina += SetStaminaSlider;
 
+        Main.GameManager.Event_UI_Player += SetPlayerText;
+        Main.GameManager.Event_UI_Team += SetTeamText;
+        Main.GameManager.Event_UI_Turn += SetTurnText;
+        
+        
         Main.GameManager.Event_EndGame += DisplayWinBox;
     }
 
     private void OnDisable()
     {
-        Main.GameManager.Event_UIUpdate -= Rebind;
         
-        // int n = Main.GameManager.Selected;
-        // Main.GameManager.players[n].EventWeaponUpdate -= UpdateShots;
+        Main.GameManager.Event_UI_Shots -= SetShotsLeftText;
+        Main.GameManager.Event_UI_WeaponLock -= SetWeaponLockText;
+        
+        Main.GameManager.Event_UI_Health -= SetHealthSlider;
+        Main.GameManager.Event_UI_Stamina -= SetStaminaSlider;
+
+        Main.GameManager.Event_UI_Player -= SetPlayerText;
+        Main.GameManager.Event_UI_Team -= SetTeamText;
+        Main.GameManager.Event_UI_Turn -= SetTurnText;
+        
         
         
         Main.GameManager.Event_EndGame -= DisplayWinBox;
@@ -58,37 +84,78 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        Main.GameManager.Players[Main.GameManager.Selected].EventWeaponUpdate += UpdateShots;
+        //print("gameplayUILoaded");
     }
 
-    public void Rebind(PlayerController playerController)
+    public void ReturnBtn()
     {
-
-        var player = playerController.player;
-        
-        Teamtxt.text = $"Team: {player.teamID}";
-        Playertxt.text = $"Player: {player.playerID}";
-        Turntxt.text = $"Turn: {Main.GameManager.turn}";
-
-        
-        HealthBar.value = player.health / 100f;
-        StaminaBar.value = player.stamina / 100f;
-
-
-        lastReferencedPlayer = playerController;
-        
-        UpdateShots(playerController);
-    }
-
-    public void UpdateShots(PlayerController playerController)
-    {
-        if (lastReferencedPlayer)
-        {
-            ShotsLefttxt.text = $"Shot left: {lastReferencedPlayer.currentShots.ToString()}/{lastReferencedPlayer.currentAllowedShots}";
-        }
+        Main.SceneHandler.Load("Menu");
+        Main.GameManager.ClearGameManager();
     }
     
-    private void DisplayWinBox()
+    //WeaponPanel
+    
+    private void SetShotsLeftText(int shots, int maxShots)
+    {
+        //print("SHOTSLEFT_UI_UPDATED");
+        ShotsLefttxt.text = $"Shot left: {maxShots - shots}";
+        
+    }
+
+
+    private void SetWeaponLockText(bool value)
+    {
+        //print("WEAPONLOCK_UI_UPDATED");
+        switch (!value)
+        {
+            case true:
+                WeaponLockText.text = "[Unlocked]";
+                WeaponLockText.color = Color.green;
+                break;
+            
+            case false:
+                WeaponLockText.text = "[Locked]";
+                WeaponLockText.color = Color.red;
+                break;
+        }
+    }
+
+    
+    
+    //Slider Panel
+    private void SetStaminaSlider(float value) =>
+        StaminaBar.value = value / 100f;
+    
+
+    private void SetHealthSlider(float value) =>
+        HealthBar.value = value / 100f;
+
+
+
+
+
+    //Info Panel
+    
+
+    private void SetPlayerText(int value)
+    {
+        Playertxt.text = $"Player: {value}";
+    }
+    
+    private void SetTeamText(int value)
+    {
+        Teamtxt.text = $"Team: {value}";
+    }
+    
+    private void SetTurnText(int value)
+    {
+        Turntxt.text = $"Turn: {value}";
+    }
+    
+    
+    //Victory Panel
+    
+    private void DisplayWinBox() //works
     {
         WinBox.SetActive(true);
 
@@ -115,10 +182,5 @@ public class GameUI : MonoBehaviour
         
         WinText.text = $"Team {teamString} wins the game!";
         WinText.color = Main.GameManager.teamMaterials[teamIndex].color;
-    }
-    
-    public void Update()
-    {
-        StaminaBar.value = lastReferencedPlayer.player.stamina / 100f;
     }
 }

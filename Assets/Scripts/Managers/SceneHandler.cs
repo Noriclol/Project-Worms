@@ -25,6 +25,7 @@ public class SceneHandler : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
         SceneManager.LoadScene("Gameplay", LoadSceneMode.Additive);
+        
         Main.InputManager.SetMouseState(InputManager.MouseState.Game);
     }
     
